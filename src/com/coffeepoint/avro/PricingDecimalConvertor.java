@@ -22,7 +22,7 @@ public class PricingDecimalConvertor  extends Conversions.DecimalConversion {
     public ByteBuffer toBytes(BigDecimal value, Schema schema, LogicalType type) {
         int scale = ((LogicalTypes.Decimal)type).getScale();
 
-        return super.toBytes(value.setScale(scale), schema, type);
+        return super.toBytes(value.setScale(scale,BigDecimal.ROUND_HALF_EVEN), schema, type);
 
     }
 }

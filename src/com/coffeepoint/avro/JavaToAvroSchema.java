@@ -66,7 +66,7 @@ public class JavaToAvroSchema {
         genericPrice.setId("Id");
         genericPrice.setIdType("ISIN");
         GenericValue genericValue = new GenericValue();
-        genericValue.setAsk(new BigDecimal("100.1"));
+        genericValue.setAsk(new BigDecimal("100.1000000000000000001"));
         genericValue.setMid(new BigDecimal("100.0"));
         genericValue.setBid(new BigDecimal("99.9"));
         genericPrice.setPrice(genericValue);
