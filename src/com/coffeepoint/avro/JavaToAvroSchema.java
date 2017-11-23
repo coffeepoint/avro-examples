@@ -42,13 +42,13 @@ public class JavaToAvroSchema {
         Schema genericPriceSchema =  new Schema.Parser().parse(new File("genericPrice.avsc"));
 
         // Write prices with Schema
-        writePricesWithSchema(genericPriceSchema, "genericPricesWithSchema.avro", 0);
+        writePricesWithSchema(genericPriceSchema, "genericPricesWithSchema.avro", 100000);
 
         // Read prices with Schema
         readPricesWithSchema(genericPriceSchema, "genericPricesWithSchema.avro");
 
         // Write prices without Schema
-        writePricesWithoutSchema(genericPriceSchema, "genericPricesWithoutSchema.avro", 0);
+        writePricesWithoutSchema(genericPriceSchema, "genericPricesWithoutSchema.avro", 100000);
 
         // Read prices with Schema
         readPricesWithoutSchema(genericPriceSchema, "genericPricesWithoutSchema.avro");
@@ -126,8 +126,8 @@ public class JavaToAvroSchema {
 
     private static GenericPrice genericPrice() {
         GenericPrice genericPrice = new GenericPrice();
-        genericPrice.setId("Id");
-        genericPrice.setIdType("ISIN");
+        genericPrice.setId(new Long(Math.round(Math.random()*100000)).toString());
+        genericPrice.setIdType("XS"+new Long(100000000+Math.round(Math.random()*100000)).toString());
         GenericValue genericValue = new GenericValue();
         genericValue.setAsk(new BigDecimal(90 + Math.random()*10));
         genericValue.setMid(new BigDecimal(90 + Math.random()*10));
@@ -140,7 +140,7 @@ public class JavaToAvroSchema {
         genericPrice.setYield(yields);
         GenericSpread spread = new GenericSpread();
         spread.setBenchmarkId("BenchmarkId");
-        spread.setBenchmarkType("ISIN");
+        spread.setBenchmarkType("XS"+new Long(100000000+Math.round(Math.random()*100000)).toString());
         GenericValue spreadValues = new GenericValue();
         spreadValues.setAsk(new BigDecimal(Math.random()));
         spreadValues.setMid(new BigDecimal(Math.random()));
