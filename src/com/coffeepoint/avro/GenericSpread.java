@@ -29,4 +29,13 @@ public class GenericSpread {
     public void setGenericValue(GenericValue genericValue) {
         this.genericValue = genericValue;
     }
+
+    @Override
+    public String toString() {
+        return "GenericSpread{" +
+            "benchmarkId='" + benchmarkId + '\'' +
+            ", benchmarkType='" + benchmarkType + '\'' +
+            ", genericValue=" + genericValue +
+            '}';
+    }
 }

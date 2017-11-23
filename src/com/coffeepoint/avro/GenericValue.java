@@ -31,4 +31,13 @@ public class GenericValue {
     public void setAsk(BigDecimal ask) {
         this.ask = ask;
     }
+
+    @Override
+    public String toString() {
+        return "GenericValue{" +
+            "bid=" + bid +
+            ", mid=" + mid +
+            ", ask=" + ask +
+            '}';
+    }
 }

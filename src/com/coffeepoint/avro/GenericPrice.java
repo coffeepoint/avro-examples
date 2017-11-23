@@ -47,4 +47,15 @@ public class GenericPrice {
     public void setSpread(GenericSpread spread) {
         this.spread = spread;
     }
+
+    @Override
+    public String toString() {
+        return "GenericPrice{" +
+            "id='" + id + '\'' +
+            ", idType='" + idType + '\'' +
+            ", price=" + price +
+            ", yield=" + yield +
+            ", spread=" + spread +
+            '}';
+    }
 }

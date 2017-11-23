@@ -3,6 +3,7 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/avro-examples.iml" filepath="$PROJECT_DIR$/avro-examples.iml" />
+      <module fileurl="file://$PROJECT_DIR$/avropython/avropython.iml" filepath="$PROJECT_DIR$/avropython/avropython.iml" />
     </modules>
   </component>
 </project>
