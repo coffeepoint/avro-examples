@@ -40,3 +40,5 @@ rather than just
 ```java
     DatumWriter<GenericPrice> writer = new SpecificDatumWriter<GenericPrice>(new GenericPrice().getSchema());
 ```
+
+This is fixed under https://issues.apache.org/jira/browse/AVRO-1891 and due for release in 1.8.3 (current verison is 1.8.2)
