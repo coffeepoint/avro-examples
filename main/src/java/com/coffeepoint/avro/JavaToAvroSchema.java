@@ -1,31 +1,24 @@
 package com.coffeepoint.avro;
 
-import java.io.BufferedOutputStream;
 import java.io.BufferedWriter;
-import java.io.ByteArrayOutputStream;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import org.apache.avro.Conversions;
 import org.apache.avro.Schema;
-import org.apache.avro.SchemaBuilder;
+import org.apache.avro.Schema.Type;
 import org.apache.avro.file.CodecFactory;
 import org.apache.avro.file.DataFileReader;
 import org.apache.avro.file.DataFileWriter;
-import org.apache.avro.generic.GenericDatumWriter;
 import org.apache.avro.io.BinaryDecoder;
 import org.apache.avro.io.BinaryEncoder;
 import org.apache.avro.io.DatumReader;
 import org.apache.avro.io.DatumWriter;
 import org.apache.avro.io.DecoderFactory;
-import org.apache.avro.io.Encoder;
 import org.apache.avro.io.EncoderFactory;
 import org.apache.avro.reflect.ReflectData;
 import org.apache.avro.reflect.ReflectDatumReader;
 import org.apache.avro.reflect.ReflectDatumWriter;
-import org.apache.avro.specific.SpecificDatumWriter;
-import sun.net.www.content.text.Generic;
 
 import java.io.File;
 import java.io.IOException;
@@ -52,6 +45,14 @@ public class JavaToAvroSchema {
 
         // Read prices with Schema
         readPricesWithoutSchema(genericPriceSchema, "genericPricesWithoutSchema.avro");
+
+        /*
+        // Write price with null schema with compression
+        writePricesWithoutSchemaWithCompression(genericPriceSchema, "genericPricesWithoutSchemaWithCompression.avro", 1);
+
+        // Read prices without Schema but With Compression
+        readPricesWithNullSchema(genericPriceSchema, "genericPricesWithoutSchemaWithCompression.avro");
+        */
     }
 
     private static void readPricesWithSchema(Schema genericPriceSchema, String avroFileName) throws IOException {
@@ -87,6 +88,22 @@ public class JavaToAvroSchema {
         fileInputStream.close();
     }
 
+    private static void readPricesWithNullSchema(Schema genericPriceSchema, String avroFileName) throws IOException {
+        // Read prices with Schema
+        DatumReader<GenericPrice> reader = new ReflectDatumReader<>(genericPriceSchema,genericPriceSchema,reflectDataWithNullableAndPricingDecimalConvertor());
+
+        DataFileReader<GenericPrice> in = new DataFileReader<>(new File(avroFileName), reader);
+        reader.setSchema(genericPriceSchema);
+
+        // read 100 packets from the file & print them as JSON
+        for (GenericPrice price : in) {
+            System.out.println(price);
+        }
+
+        // close the input file
+        in.close();
+    }
+
     private static void writePricesWithSchema(Schema genericPriceSchema, String avroFileName, int numberOfPricesToGenerate)
         throws IOException {
         // Serialize some generic prices with schema
@@ -94,6 +111,7 @@ public class JavaToAvroSchema {
         // create a file of packets
 
         DatumWriter<GenericPrice> writer = new ReflectDatumWriter<>(GenericPrice.class, reflectDataWithNullableAndPricingDecimalConvertor());
+
         DataFileWriter<GenericPrice> out = new DataFileWriter<>(writer)
                 .setCodec(CodecFactory.deflateCodec(9))
                 .create(genericPriceSchema, file);
@@ -123,6 +141,44 @@ public class JavaToAvroSchema {
         fileOutputStream.flush();
         fileOutputStream.close();
     }
+
+    private static void writePricesWithoutSchemaWithCompression(Schema genericPriceSchema, String avroFileName, int numberOfPricesToGenerate)
+        throws IOException {
+
+        // Serialize some generic prices with schema
+        File file = new File(avroFileName);
+        // create a file of packets
+
+        DatumWriter<GenericPrice> writer = new ReflectDatumWriter<>(GenericPrice.class, reflectDataWithNullableAndPricingDecimalConvertor());
+
+        DataFileWriter<GenericPrice> out = new DataFileWriter<>(writer)
+            .create(Schema.create(Type.NULL), file);
+        writer.setSchema(genericPriceSchema);
+        out.setCodec(CodecFactory.deflateCodec(9));
+
+        for (int i=0; i<numberOfPricesToGenerate; ++i) {
+            out.append(genericPrice());
+        }
+
+        // close the output file
+        out.close();
+    }
+
+    private static void readPricesWithoutSchemaWithCompression(Schema genericPriceSchema, String avroFileName) throws IOException {
+        // Read prices with Schema
+        DatumReader<GenericPrice> reader = new ReflectDatumReader<>(genericPriceSchema,genericPriceSchema,reflectDataWithNullableAndPricingDecimalConvertor());
+        DataFileReader<GenericPrice> in = new DataFileReader<>(new File(avroFileName), reader);
+
+
+        // read 100 packets from the file & print them as JSON
+        for (GenericPrice price : in) {
+            System.out.println(price);
+        }
+
+        // close the input file
+        in.close();
+    }
+
 
     private static GenericPrice genericPrice() {
         GenericPrice genericPrice = new GenericPrice();
