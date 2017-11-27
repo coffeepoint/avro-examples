@@ -16,9 +16,9 @@ AvroSerialisationFromGeneratedJava - this shows using the classes generated off 
 Note this is a bug in the current bug in avro 1.8.2 (and below) that mean when using decimal types you need to write
 
 ```java
-        SpecificData specificData = new SpecificData();
-        specificData.addLogicalTypeConversion(new DecimalConversion());
-        DatumReader<GenericPrice> reader = new SpecificDatumReader<GenericPrice>(new GenericPrice().getSchema(),new GenericPrice().getSchema(),specificData);
+    SpecificData specificData = new SpecificData();
+    specificData.addLogicalTypeConversion(new DecimalConversion());
+    DatumReader<GenericPrice> reader = new SpecificDatumReader<GenericPrice>(new GenericPrice().getSchema(),new GenericPrice().getSchema(),specificData);
 ```
 
 rather than just
@@ -30,14 +30,13 @@ rather than just
 and 
 
 ```java
-        SpecificData specificData = new SpecificData();
-        specificData.addLogicalTypeConversion(new DecimalConversion());
-        DatumWriter<GenericPrice> writer = new SpecificDatumWriter<GenericPrice>(new GenericPrice().getSchema(),specificData);
+    SpecificData specificData = new SpecificData();
+    specificData.addLogicalTypeConversion(new DecimalConversion());
+    DatumWriter<GenericPrice> writer = new SpecificDatumWriter<GenericPrice>(new GenericPrice().getSchema(),specificData);
 ```
 
 rather than just
 
 ```java
-
-        DatumWriter<GenericPrice> writer = new SpecificDatumWriter<GenericPrice>(new GenericPrice().getSchema());
+    DatumWriter<GenericPrice> writer = new SpecificDatumWriter<GenericPrice>(new GenericPrice().getSchema());
 ```
