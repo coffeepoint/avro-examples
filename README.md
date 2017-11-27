@@ -5,7 +5,7 @@ the schema can be adapted to make it more stringent. It converts BigDecimals to 
 rounding half even it necessary.
 
 Run 
-``maven install``
+``mvn install``
 to generate java classes based on the schema in 
 ``src/main/avro/genericPrice.avsc``
 
